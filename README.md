@@ -12,7 +12,7 @@ Kelas   : PBP B
 
 **2. Sebutkan *widget* apa saja yang kamu gunakan pada proyek ini dan jelaskan fungsinya.**
 
-Appbar (Untuk bar utama di paling atas), body (Untuk InfoCard yang terdiri dari NPM, name, class), Text (Memunculkan tulisan “Begins your Journey at Book Corner”), ItemCard (Untuk menampilkan icons yang terdiri dari lihat product, add product dan logout)
+Scaffold (Struktur dasar halaman), Appbar (Untuk bar utama di paling atas), Padding (Jarak framing sekitar body halaman), Column (Menyusun elemen secara vertikal), Row (Menyusun elemen secara horizontal), SizedBox (jarak column), Gridview (Menyusun widget secara grid), Card (Untuk InfoCard yang terdiri dari NPM, name, class), Text (Memunculkan tulisan “Begins your Journey at Book Corner”), Material ItemCard (Untuk menampilkan icons yang terdiri dari lihat product, add product dan logout), InkWell (Untuk deteksi event), Snackbar (Message singkat di bawah), Container (Tata letak).
 
 **3. Apa fungsi dari `setState()`? Jelaskan variabel apa saja yang dapat terdampak dengan fungsi tersebut.**
 
