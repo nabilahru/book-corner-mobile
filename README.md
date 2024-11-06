@@ -1,8 +1,8 @@
-# Tugas Individu 
+# Book Corner
 
-Nama    : Nabilah Roslita Utami
-NPM     : 2306223446
-Kelas   : PBP B
+Nama    : Nabilah Roslita Utami  
+NPM     : 2306223446  
+Kelas   : PBP B  
 
 ## Tugas Individu 7
 
@@ -26,4 +26,5 @@ Untuk memperbarui stateful widget setiap ada event. variabel yang terdampak adal
 
 Generate projek flutter baru bernama book_corner dengan memberikan command pada cmd `flutter create book_corner`.  Kemudian, definisikan warna-warna yang dibutuhkan pada `main.dart.`  Kemudian, buat `menu.dart` untuk membuat widget. Lalu, disana buat AppBar, Text, dan 3 tombol (Lihat Product, Add Product, Logout). Untuk warna style yang berbeda pada tiap item, tambahkan properti color pada class ItemHomePage. Selanjutnya, pilih warna dari library color yang sudah ada. Lalu, buat itemnya, misalnya seperti ItemHomepage("Logout", Icons.logout, Colors.deepPurple[400]!).
 
-**Referensi:** Fajar, A. R. (2021). *Flutter – Stateless vs Stateful*. Retrieved November 4, 2024, from https://www.kawankoding.id/flutter-stateless-vs-stateful/
+**Referensi:**  
+Fajar, A. R. (2021). *Flutter – Stateless vs Stateful*. Retrieved November 4, 2024, from https://www.kawankoding.id/flutter-stateless-vs-stateful/
