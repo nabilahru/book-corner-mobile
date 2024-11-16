@@ -1,3 +1,4 @@
+import 'package:book_corner/screens/list_productentry.dart';
 import 'package:flutter/material.dart';
 import 'package:book_corner/screens/menu.dart';
 import 'package:book_corner/screens/productentry_form.dart';
@@ -50,6 +51,7 @@ class LeftDrawer extends StatelessWidget {
                     ));
               },
             ),
+
             ListTile(
               leading: const Icon(Icons.add),
               title: const Text('Add Product'),
@@ -60,6 +62,18 @@ class LeftDrawer extends StatelessWidget {
                     MaterialPageRoute(
                       builder: (context) => const ProductEntryformPge(),
                     ));
+              },
+            ),
+
+            ListTile(
+              leading: const Icon(Icons.book),
+              title: const Text('All Product'),
+              onTap: () {
+                  // Route menu ke halaman product
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const ProductEntryPage()),
+                  );
               },
             ),
         ],

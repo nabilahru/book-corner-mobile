@@ -9,7 +9,7 @@ class MyHomePage extends StatelessWidget {
   final String className = 'PBP B'; // Kelas
 
   final List<ItemHomepage> items = [
-        ItemHomepage("Lihat Product", Icons.book, Colors.pink[400]!),
+        ItemHomepage("All Product", Icons.book, Colors.pink[400]!),
         ItemHomepage("Add Product", Icons.add, Colors.purple[400]!),
         ItemHomepage("Logout", Icons.logout, Colors.deepPurple[400]!),
      ];

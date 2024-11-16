@@ -1,5 +1,10 @@
+import 'dart:convert';
+
+import 'package:book_corner/screens/menu.dart';
 import 'package:flutter/material.dart';
 import 'package:book_corner/widgets/left_drawer.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
 
 class ProductEntryformPge extends StatefulWidget {
   const ProductEntryformPge({super.key});
@@ -10,19 +15,24 @@ class ProductEntryformPge extends StatefulWidget {
 
 class _ProductEntryFormPageState extends State<ProductEntryformPge> {
   final _formKey = GlobalKey<FormState>();
-  String _title = "";
+  String _name = "";
 	int _price = 0;
 	String _category = "";
+  int _quantity = 0;
   String _description = "";
 
   
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
+
     return Scaffold(
       appBar: AppBar(
-        title: const Center(
-          child: Text(
-            'Form Add Product',
+       title: const Text(
+          'Book Corner',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
           ),
         ),
         backgroundColor: Theme.of(context).colorScheme.primary,
@@ -37,28 +47,41 @@ class _ProductEntryFormPageState extends State<ProductEntryformPge> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              const SizedBox(height: 10),
+              const Center(
+                child: Text(
+                  "Add New Book 📖", 
+                  style: TextStyle(
+                    fontSize: 30.0,
+                    fontWeight: FontWeight.w900,
+                    color: Colors.indigo,
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 10),
               // Nama product
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
                   decoration: InputDecoration(
-                    hintText: "Title",
-                    labelText: "Title",
+                    hintText: "Name",
+                    labelText: "Name",
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
                     ),
                   ),
                   onChanged: (String? value) {
                     setState(() {
-                      _title = value!;
+                      _name = value!;
                     });
                   },
                   validator: (String? value) {
                     if (value == null || value.isEmpty) {
-                      return "Title must be filled!";
+                      return "Name must be filled!";
                     }
                     else if (value.length > 255) {
-                      return "Title can't exceed 255 characters";
+                      return "Name can't exceed 255 characters";
                     }
                     return null;
                   },
@@ -128,6 +151,38 @@ class _ProductEntryFormPageState extends State<ProductEntryformPge> {
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
                   decoration: InputDecoration(
+                    hintText: "Quantity",
+                    labelText: "Quantity",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                  ),
+                  onChanged: (String? value) {
+                    setState(() {
+                      _quantity = int.tryParse(value!) ?? 0;
+                    });
+                  },
+                  validator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return "Quantity must be filled!";
+                    }
+                    // Validasi numerik
+                    final int? priceValidation = int.tryParse(value);
+                    if (priceValidation == null) {
+                      return "Quantity must be a numerical value!";
+                    }
+                    if (priceValidation <= 0) {
+                      return "Quantity can't be negative!";
+                    }
+                    return null;
+                  },
+                ),
+              ),
+
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  decoration: InputDecoration(
                     hintText: "Description",
                     labelText: "Description",
                     border: OutlineInputBorder(
@@ -160,38 +215,41 @@ class _ProductEntryFormPageState extends State<ProductEntryformPge> {
                       backgroundColor: WidgetStateProperty.all(
                           Theme.of(context).colorScheme.primary),
                     ),
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              title: const Text('Product successfully Added!'),
-                              content: SingleChildScrollView(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text('Title: $_title'),
-                                    Text('Price: Rp $_price'),
-                                    Text('Category: $_category'),
-                                    Text('Description: $_description')
-                                  ],
-                                ),
-                              ),
-                              actions: [
-                                TextButton(
-                                  child: const Text('OK'),
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                    _formKey.currentState!.reset();
-                                  },
-                                ),
-                              ],
+         
+                    onPressed: () async {
+                        if (_formKey.currentState!.validate()) {
+                            // Kirim ke Django dan tunggu respons
+                            final response = await request.postJson(
+                                "http://127.0.0.1:8000//create-flutter/",
+                                jsonEncode(<String, String>{
+                                    'name': _name,
+                                    'price': _price.toString(),
+                                    'genre_category': _category,
+                                    'quantity': _quantity.toString(),
+                                    'description': _description,
+                                }),
                             );
-                          },
-                        );
-                      }
+                            if (context.mounted) {
+                                if (response['status'] == 'success') {
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(const SnackBar(
+                                    content: Text("Product added successfully!"),
+                                    ));
+                                    Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(builder: (context) => MyHomePage()),
+                                    );
+                                } else {
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(const SnackBar(
+                                        content:
+                                            Text("Please try again"),
+                                    ));
+                                }
+                            }
+                        }
                     },
+
                     child: const Text(
                       "Save",
                       style: TextStyle(color: Colors.white),
