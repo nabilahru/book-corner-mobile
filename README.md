@@ -103,3 +103,49 @@ onPressed: () {
 Flutter. (n. d). *Column class*. Retrieved November 12, 2024, from https://api.flutter.dev/flutter/widgets/Column-class.html  
 
 Flutter. (n. d). *Layouts in Flutter*. Retrieved November 12, 2024, from https://docs.flutter.dev/ui/layout
+
+
+
+## Tugas Individu 9
+
+**1. Jelaskan fungsi dari library *http* yang sudah kamu implementasikan pada tugas ini**
+
+`http` membantu developer dalam mengembangkan aplikasi *mobile,* yaitu mengirim permintaan http seperti GET, POST, dll misalnya ke website, yakni mengintegrasikan antara Django dan Flutter.
+
+**2. Jelaskan fungsi dari CookieRequest dan jelaskan mengapa *instance* CookieRequest perlu untuk dibagikan ke semua komponen di aplikasi Flutter.**
+
+CookieRequest digunakan untuk menyimpan informasi yang akan digunakan untuk membuat permintaan http. CookieRequest perlu digunakan untuk memastikan konsistensi pada permintaan http-nya (hak akses / authentication). Instance CookieRequest akan memudahkan dalam mengelola cookies untuk semua permintaan http dengan cookie yang sama. 
+
+**3. Jelaskan mekanisme pengiriman data mulai dari input hingga dapat ditampilkan pada Flutter.**
+
+Memberikan izin android untuk mengakses internet dengan menambahkan `<uses-permission android:name="android.permission.INTERNET" />` . Lalu tambahkan fungsi fetch untuk mengambil data dari suatu url dan tambahkan request.get. Misalnya seperti ini
+
+```dart
+final response = await request.get('http://127.0.0.1:8000//json/');
+```
+
+Kemudian, simpan response yang dihasilkan pada suatu variable. Dan buat widget untuk menampilkan datanya.
+
+**4. Jelaskan mekanisme autentikasi dari login, register, hingga logout. Mulai dari input data akun pada Flutter ke Django hingga selesainya proses autentikasi oleh Django dan tampilnya menu pada Flutter.**
+
+Login dan register:
+
+- Input username dan password pada flutter lalu di POST ke Django.
+- Pada Django akan dieksekusi melalui method Login atau register. Django akan melakukan *authentication.*
+- Kemudian flutter akan menerima response dari Django untuk di validasi. Pada proses login. Flutter akan menyimpan Cookie dan membagikannya ke semua komponen aplikasi. Cookie tersebut akan memvalidasi hak akses pada halaman aplikasi yang di-show-kan.
+
+Logout: 
+
+- Flutter akan POST ke method logout di Django.
+- Django akan memproses penghapusan sesi pengguna dan mengembalikannya pada Flutter.
+- Kemudian, Flutter mengarahkan ke halaman login kembali.
+
+**5. Jelaskan bagaimana cara kamu mengimplementasikan *checklist* di atas secara *step-by-step*! (bukan hanya sekadar mengikuti tutorial).**
+
+Integrasi A*uthentication* Django dan Flutter: Pada Django, buat app bernama *authentication* dengan cmd `python [manage.py](http://manage.py/) startapp *authentication.`* Lalu *install library* baru `django-cors-headers,` tambahkan juga pada requirements.txt. Kemudian, tambahkan `corsheaders.middleware.CorsMiddleware` di settings.py. Tambahkan method Login, Register, dan Logout pada views.py/authentication untuk memproses *authentication* nantinya.   
+
+Selanjutnya, pada Flutter *install package* `flutter pub add provider` dan`flutter pub add pbp_django_auth.` Lalu, `CookieRequest` *library* di pass ke semua child widgets menggunakan provider. Lalu buat file baru pada screens, login.dart dan register.dart sebagai UI Login register.  
+
+Membuat Model *Custom:*  Manfaatkan Quicktype untuk membuat model yang menyesuaikan dengan tipe data JSON.  
+
+Fetch Data dari Django untuk dihubungkan dengan Flutter: Mengizinkan akses internet pada flutter dengan menambahkan `<uses-permission android:name="android.permission.INTERNET" />.` Kemudian, buat list_productentry.dart untuk halaman yang memunculkan semua  card produk. Buat Navigator.push untuk mengirimkan context berisi data produk yang ke halaman detailProduct. Lalu, Buat detailproduct.dart yang akan memunculkan detail produknya.
